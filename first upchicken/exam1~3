@@ -1,0 +1,178 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+class Person
+{
+public:
+    Person(string nm, string tt) : m_Name(nm), m_Title(tt), m_NumofClass(0), m_FixedWage(0), m_Allowance(0) {} // 初始化所有成员变量
+
+    void setName(string nm)
+    {
+        m_Name = nm;
+    }
+    void setTitle(string tt)
+    {
+        m_Title = tt;
+    }
+    string getName()
+    {
+        return m_Name;
+    }
+    string getTitle()
+    {
+        return m_Title;
+    }
+
+    void setNumofClass(int n)
+    {
+        m_NumofClass = n;
+    }
+    int getNumofClass()
+    {
+        return m_NumofClass;
+    }
+
+    void setFixedWage(string t)
+    {
+        if (t == "professor")
+        {
+            m_FixedWage = 5000;
+        }
+        if (t == "Fuprofessor")
+        {
+            m_FixedWage = 4000;
+        }
+    }
+    void setAllowance(string t)
+    {
+        if (t == "professor")
+        {
+            m_Allowance = 90;
+        }
+        if (t == "Fuprofessor")
+        {
+            m_Allowance = 80;
+        }
+    }
+    int getFixedWage()
+    {
+        return m_FixedWage;
+    }
+    int getAllowance()
+    {
+        return m_Allowance;
+    }
+
+    int calculateWage()
+    {
+        return m_FixedWage + m_Allowance * m_NumofClass;
+    }
+
+private:
+    string m_Name;
+    string m_Title;
+    int m_NumofClass;
+    int m_FixedWage;
+    int m_Allowance;
+};
+
+const void print(Person& p)//打印Person类的工资
+{
+    cout << left << setw(10) << p.getName() << "\t"
+        << setw(10) << p.getTitle() << "\t"
+        << setw(10) << " " << "\t"
+        << setw(10) << p.getNumofClass() << "\t"
+        << setw(10) << p.calculateWage() << endl;
+}
+
+class Administrator : public Person
+{
+public:
+    Administrator(string nm, string tt, string id) : Person(nm, tt), m_ManagementId(id), m_ManagementCompensation(0) {} // 初始化所有成员变量
+
+    void setManagementId(string id)
+    {
+        m_ManagementId = id;
+    }
+    string getManagementId()
+    {
+        return m_ManagementId;
+    }
+
+    void setManagementCompensation(string t)
+    {
+        if (t == "dean")
+        {
+            m_ManagementCompensation = 4000;
+        }
+        if (t == "Fudean")
+        {
+            m_ManagementCompensation = 3000;
+        }
+    }
+    int getManagementCompensation()
+    {
+        return m_ManagementCompensation;
+    }
+
+    int calculateWageofManager()
+    {
+        return  this->calculateWage() + m_ManagementCompensation;//管理人员的工资是在原有工资的基础上加上管理工资
+    }
+
+private:
+    string m_ManagementId;
+    int m_ManagementCompensation;
+};
+
+void print(Administrator& a)//打印Administrator类的工资
+{
+    cout << left << setw(10) << a.getName() << "\t"
+        << setw(10) << a.getTitle() << "\t"
+        << setw(10) << a.getManagementId() << "\t"
+        << setw(10) << a.getNumofClass() << "\t"
+        << setw(10) << a.calculateWageofManager() << endl;
+}
+
+void test()
+{
+    Administrator a1("Zhangsan", "professor", "dean");
+    a1.setNumofClass(5);
+    a1.setFixedWage(a1.getTitle());
+    a1.setAllowance(a1.getTitle());
+    a1.setManagementCompensation(a1.getManagementId());
+    print(a1);
+
+    Administrator a2("Lisi", "Fuprofessor", "Fudean");
+    a2.setNumofClass(10);
+    a2.setFixedWage(a2.getTitle());
+    a2.setAllowance(a2.getTitle());
+    a2.setManagementCompensation(a2.getManagementId());
+    print(a2);
+
+    Person p3("Wangwu", "professor");
+    p3.setNumofClass(8);
+    p3.setFixedWage(p3.getTitle());
+    p3.setAllowance(p3.getTitle());
+    print(p3);
+
+    Person p4("Zhaoliu", "Fuprofessor");
+    p4.setNumofClass(16);
+    p4.setFixedWage(p4.getTitle());
+    p4.setAllowance(p4.getTitle());
+    print(p4);
+}
+
+int main()
+{
+    cout << left << setw(10) << "姓名" << "\t"
+        << setw(10) << "职称" << "\t"
+        << setw(10) << "管理身份" << "\t"
+        << setw(10) << "上课数量" << "\t"
+        << setw(10) << "月收入" << endl;
+    test();
+
+    system("pause");
+    return 0;
+}
