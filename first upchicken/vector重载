@@ -1,0 +1,110 @@
+#include <iostream>
+#include<stdexcept>
+#include <vector>
+using namespace std;
+
+class Vector
+{
+public:
+    // 构造函数
+    Vector() {}
+
+    // 参数化构造函数
+    Vector(vector<int> elems) : elements(elems) {}
+
+    // 重载运算符+
+    Vector operator+(const Vector& other) const {
+        if (elements.size() != other.elements.size()) {
+            throw invalid_argument("Vector sizes do not match for addition.");
+        }
+        vector<int> result;
+        for (size_t i = 0; i < elements.size(); ++i) {
+            result.push_back(elements[i] + other.elements[i]);
+        }
+        return Vector(result);
+    }
+
+    // 重载运算符-
+    Vector operator-(const Vector& other) const {
+        if (elements.size() != other.elements.size()) {
+            throw invalid_argument("Vector sizes do not match for subtraction.");
+        }
+        vector<int> result;
+        for (size_t i = 0; i < elements.size(); ++i) {
+            result.push_back(elements[i] - other.elements[i]);
+        }
+        return Vector(result);
+    }
+
+    // 重载运算符*
+    Vector operator*(const Vector& other) const {
+        if (elements.size() != other.elements.size()) {
+            throw invalid_argument("Vector sizes do not match for multiplication.");
+        }
+        vector<int> result;
+        for (size_t i = 0; i < elements.size(); ++i) {
+            result.push_back(elements[i] * other.elements[i]);
+        }
+        return Vector(result);
+    }
+
+    // 重载运算符=
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            elements = other.elements;
+        }
+        return *this;
+    }
+
+    // 重载运算符>>
+    friend istream& operator>>(istream& cin, Vector& vec) {
+        int size;
+        cout << "Enter vector size: ";
+        cin >> size;
+        vec.elements.resize(size);
+        cout << "Enter vector elements: ";
+        for (int i = 0; i < size; ++i) {
+            cin >> vec.elements[i];
+        }
+        return cin;
+    }
+
+    // 重载运算符<<
+    friend ostream& operator<<(ostream& cout, const Vector& vec) {
+        cout << "(";
+        for (size_t i = 0; i < vec.elements.size(); ++i) {
+            cout << vec.elements[i];
+            if (i != vec.elements.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << ")";
+        return cout;
+    }
+
+private:
+    vector<int> elements;
+
+};
+
+int main() 
+{
+    Vector X, Y;
+    cout << "Please enter vector X: ";
+    cin >> X;
+    cout << "Please enter vector Y: ";
+    cin >> Y;
+
+    // 进行向量运算
+    Vector addition = X + Y;
+    Vector subtraction = X - Y;
+    Vector multiplication = X * Y;
+
+    // 输出结果
+    cout << "Result of addition (X + Y): " << addition << endl;
+    cout << "Result of subtraction (X - Y): " << subtraction << endl;
+    cout << "Result of multiplication (X * Y): " << multiplication << endl;
+
+    system("pause");
+    return 0;
+}
